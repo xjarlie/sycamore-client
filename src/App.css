@@ -1,38 +1,126 @@
-.App {
-  text-align: center;
+/* GENERAL */
+:root {
+    --color-1: #191036;
+    --color-2: #342459;
+    --color-3: #443170;
+    --color-5: #865EE0;
+    --color-6: #5B4490;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.app {
+    background-color: var(--color-1);
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: white;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+/* AUTH */
+.authBox {
+    background-color: var(--color-3);
+    margin: auto;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    /* max-width: 800px; */
+    padding: 18px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.authBox>.header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 0.5rem 0.5rem 1.5rem 1rem;
 }
 
-.App-link {
-  color: #61dafb;
+.authBox>.header>span {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 300;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.authBox>.inputBox {
+    display: flex;
+    flex-direction: column;
+}
+
+.authBox>.inputBox>.row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.authBox>.inputBox>.row>.inputWrap {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 1rem;
+    min-width: 250px;
+}
+
+.authBox>.inputBox>.row>.inputWrap>label {
+    font-weight: 700;
+    color: rgba(255, 255, 255, 60%);
+    margin-bottom: 6px;
+}
+
+.authBox>.inputBox>.row>.inputWrap>input {
+    font-family: 'IBM Plex Sans', sans-serif;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    background-color: var(--color-6);
+    color: white;
+    transition: background-color 0.1s ease;
+    
+}
+
+.authBox>.inputBox>.row>.inputWrap>input:hover {
+    background-color: var(--color-2);
+}
+
+.authBox>.inputBox>.row>.inputWrap>input:focus {
+    outline: none;
+    background-color: var(--color-2);
+}
+
+.authBox>.footer {
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.authBox>.footer>.link {
+    padding-bottom: 0.5rem;
+}
+
+.authBox>.footer>.button {
+    background-color: var(--color-5);
+    border: none;
+    border-radius: 8px;
+    padding: 1rem;
+    font-size: 1.3rem;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+}
+
+.authBox>.footer>.button:hover {
+    background-color: var(--color-2);
+}
+
+.authBox>.footer>.button:disabled {
+    background-color: var(--color-6);
+    cursor: default;
 }
