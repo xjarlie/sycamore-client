@@ -5,6 +5,9 @@
     --color-3: #443170;
     --color-5: #865EE0;
     --color-6: #5B4490;
+
+    --color-valid: #38AC35;
+    --color-invalid: rgb(172, 53, 53);
 }
 
 .app {
@@ -28,8 +31,9 @@
     display: flex;
     flex-direction: column;
     width: 80%;
-    /* max-width: 800px; */
+    max-width: 1000px;
     padding: 18px;
+    min-width: 375px;
 }
 
 .authBox>.header {
@@ -63,6 +67,7 @@
     width: 50%;
     padding: 1rem;
     min-width: 250px;
+    position: relative;
 }
 
 .authBox>.inputBox>.row>.inputWrap>label {
@@ -80,17 +85,58 @@
     background-color: var(--color-6);
     color: white;
     transition: background-color 0.1s ease;
-    
+    margin-bottom: 5px;
 }
 
 .authBox>.inputBox>.row>.inputWrap>input:hover {
-    background-color: var(--color-2);
+    /* background-color: var(--color-2); */
 }
 
 .authBox>.inputBox>.row>.inputWrap>input:focus {
-    outline: none;
     background-color: var(--color-2);
+    outline: none;
 }
+
+.authBox>.inputBox>.row>.inputWrap.valid>input {
+    outline: 2px solid var(--color-valid);
+
+}
+
+.authBox>.inputBox>.row>.inputWrap.invalid>input {
+    outline: 2px solid var(--color-invalid);
+
+}
+
+.authBox>.inputBox>.row>.inputWrap>span {
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding-top: 4px;
+    position: absolute;
+    bottom: 0;
+}
+
+.authBox>.inputBox>.row>.inputWrap>span.validText {
+    color: var(--color-valid);
+    display: none;
+}
+
+.authBox>.inputBox>.row>.inputWrap.valid>span.validText {
+    display: inline;
+}
+
+.authBox>.inputBox>.row>.inputWrap>span.invalidText {
+    color: var(--color-invalid);
+    display: none;
+}
+
+.authBox>.inputBox>.row>.inputWrap.invalid>span.invalidText {
+    display: inline;
+}
+
+.authBox>.inputBox>.row>.inputWrap>span.spaceTaker {
+    visibility: hidden;
+}
+
 
 .authBox>.footer {
     display: flex;
@@ -103,6 +149,14 @@
 
 .authBox>.footer>.link {
     padding-bottom: 0.5rem;
+    font-size: 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.1s ease;
+}
+
+.authBox>.footer>.link:hover {
+    color: rgba(255, 255, 255, 50%);
 }
 
 .authBox>.footer>.button {
@@ -123,4 +177,32 @@
 .authBox>.footer>.button:disabled {
     background-color: var(--color-6);
     cursor: default;
+}
+
+
+/* MAIN */
+.main {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--color-1);
+    width: 15rem;
+}
+
+.sidebar>.header {
+    
+}
+
+.chatPane {
+    height: 100%;
+    background-color: var(--color-3);
+    flex-grow: 1;
 }
