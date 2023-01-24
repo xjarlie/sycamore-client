@@ -183,9 +183,9 @@ class Signup extends React.Component {
             return;
         }
 
-        sessionStorage.setItem('id', data.username);
-        sessionStorage.setItem('token', loginJson.authToken);
-        sessionStorage.setItem('serverURL', serverURL);
+        localStorage.setItem('id', data.username);
+        localStorage.setItem('token', loginJson.authToken);
+        localStorage.setItem('serverURL', serverURL);
 
         this.setState({
             authed: true

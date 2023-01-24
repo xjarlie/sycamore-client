@@ -198,7 +198,80 @@
 }
 
 .sidebar>.header {
-    
+    font-size: 2.7rem;
+    font-weight: 300;
+    margin-left: 1rem;
+    margin-top: 1.8rem;
+    margin-bottom: 1.8rem;
+}
+
+.sidebar>.searchWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.sidebar>.searchWrap>input {
+    width: 100%;
+    font-family: 'IBM Plex Sans', sans-serif;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    background-color: var(--color-3);
+    color: white;
+    transition: background-color 0.1s ease;
+    margin-bottom: 5px;
+}
+
+.sidebar>.searchWrap>input:focus {
+    outline: none;
+}
+
+.sidebar>.searchWrap>input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+}
+
+.sidebar>.searchWrap>input::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgba(255, 255, 255, 45%);;
+    opacity: 1;
+}
+
+.sidebar>.searchWrap>input::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: rgba(255, 255, 255, 45%);
+}
+
+.sidebar>.chatList>.chatItem {
+    display: block;
+    text-decoration: none;
+    color: white;
+    margin: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    border-radius: 4px;
+    padding: 0.75rem;
+    align-items: baseline;
+    flex-wrap: wrap;
+}
+
+.sidebar>.chatList>.chatItem.active {
+    background-color: var(--color-3);
+}
+
+.sidebar>.chatList>.chatItem>.id {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.sidebar>.chatList>.chatItem>.url {
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 65%);
+    margin-left: 5px;
 }
 
 .chatPane {

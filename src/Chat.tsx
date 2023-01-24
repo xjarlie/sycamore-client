@@ -1,67 +1,61 @@
 import React from 'react';
-import { get } from './lib/network';
+import withOutletContext from './lib/withOutletContext';
 import withLoaderData from './lib/withLoaderData';
+import { serverUrlFrom } from './lib/network';
 
 class Chat extends React.Component {
     props: any;
-    state: {
-        messages: any,
-        helloWorld: string
-    }
+    state: any;
     loaded: boolean;
 
     constructor(props: any) {
         super(props);
 
         this.state = {
-            messages: {},
-            helloWorld: 'aaaa'
+
         }
 
         this.loaded = false;
-
-        this.startPoll = this.startPoll.bind(this);
+        
     }
 
     componentDidMount(): void {
-        if (!this.loaded) {
-            this.startPoll();
-        }
-        this.loaded = true;
-    }
-
-    async startPoll() {
-
-        let status = 0;
-
-        while (status === 0) {
-            const serverURL = sessionStorage.getItem('serverURL');
-            console.log(serverURL);
-            const response = await get(`${serverURL}/pollInbox`);
-            console.log(response.json.message.text);
-
-        }
-
-
-        // repeat infinitely
+        this.setState({
+            props: this.props
+        });
     }
 
     render() {
-        const helloWorld = this.state.helloWorld;
-        console.log(this.props.loaderData);
+        console.log(this.props);
+        // Get inbox by chat
+        const inbox = this.props.outletContext.inbox;
+        const arrInbox: [string, any][] = Object.entries(inbox);
+        const filteredInbox = arrInbox.filter(([id, message]) => {
+
+            console.log()
+
+            return (message.from.id === this.state.chatID.id) && (serverUrlFrom(message.from.url, false) === this.state.chatID.url)
+        });
+        const objFilteredInbox = Object.fromEntries(filteredInbox);
+
         return (
             <div className='chat'>
-                {helloWorld}
                 <br />
-                <button type='button' onClick={this.startPoll}>Start Poll</button>
+                {
+                    Object.entries(objFilteredInbox).map(([id, message]) => {
+                        return <div key={id} className='message'>{id}: {message.text}</div>
+                    })
+                }
+                <button type='button'>{this.props.loaderData.chatID}</button>
             </div>
         )
     }
 }
 
 function loader({ params }: { params: any }) {
+    console.log(params);
     return { chatID: params.chatID };
 }
 
 export { loader };
-export default withLoaderData(Chat);
+export default withLoaderData(withOutletContext(Chat));

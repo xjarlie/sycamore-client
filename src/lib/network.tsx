@@ -1,7 +1,7 @@
 
 export async function post(url: string, data: any) {
-    const token = sessionStorage.getItem('token');
-    const id = sessionStorage.getItem('id');
+    const token = localStorage.getItem('token');
+    const id = localStorage.getItem('id');
 
     const response = await fetch(url, {
         method: 'POST',
@@ -17,8 +17,8 @@ export async function post(url: string, data: any) {
 }
 
 export async function get(url: string) {
-    const token = sessionStorage.getItem('token');
-    const id = sessionStorage.getItem('id');
+    const token = localStorage.getItem('token');
+    const id = localStorage.getItem('id');
 
     const response = await fetch(url, {
         credentials: 'include',
@@ -29,4 +29,24 @@ export async function get(url: string) {
     });
 
     return { status: response.status, json: await response.json() };
+}
+
+export function serverUrlFrom(url: string, withProtocol: boolean): string {
+
+    let serverURL = url;
+
+    if (withProtocol) {
+        if (!url.includes('http://') && !url.includes('https://')) {
+            serverURL = 'https://' + url;
+        }
+    } else {
+        if (url.includes('http://')) {
+            serverURL = url.split('http://')[1];
+        } else if (url.includes('https://')) {
+            serverURL = url.split('https://')[1];
+        }
+    }
+
+
+    return serverURL;
 }
