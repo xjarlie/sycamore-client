@@ -20,13 +20,19 @@ class Chat extends React.Component {
     }
 
     componentDidMount(): void {
-        this.setState({
-            props: this.props
-        });
+        // this.setState({
+        //     props: this.props
+        // });
     }
 
     render() {
         console.log(this.props);
+
+        const chatID = {
+            id: this.props.loaderData.chatID.split('~')[0],
+            url: this.props.loaderData.chatID.split('~')[1]
+        }
+
         // Get inbox by chat
         const inbox = this.props.outletContext.inbox;
         const arrInbox: [string, any][] = Object.entries(inbox);
@@ -34,7 +40,7 @@ class Chat extends React.Component {
 
             console.log()
 
-            return (message.from.id === this.state.chatID.id) && (serverUrlFrom(message.from.url, false) === this.state.chatID.url)
+            return (message.from.id === chatID.id) && (serverUrlFrom(message.from.url, false) === chatID.url)
         });
         const objFilteredInbox = Object.fromEntries(filteredInbox);
 

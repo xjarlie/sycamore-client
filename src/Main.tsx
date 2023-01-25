@@ -54,6 +54,8 @@ class Main extends React.Component {
                 });
             } catch (e) {
                 console.log(e);
+                const sleep = async () => {return new Promise(resolve => setTimeout(resolve, 2000))};
+                await sleep();
             }
 
         }
@@ -72,6 +74,12 @@ class Main extends React.Component {
                 id: 'xjarlie1',
                 url: 'localhost:4000',
                 displayName: 'Xjarlie 1',
+                unread: 0
+            },
+            'xjarlie~localhost:3001': {
+                id: 'xjarlie',
+                url: 'localhost:3001',
+                displayName: 'XJARLIE',
                 unread: 0
             }
         }
