@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
-import Main from './Main';
+import Main, { loader as mainLoader } from './Main';
 import Chat, { loader as chatLoader } from './Chat';
 import Signup, { loader as signupLoader } from './Signup';
 
@@ -23,6 +23,7 @@ const router = createBrowserRouter([
       {
         path: 'chats',
         element: <Main />,
+        loader: mainLoader,
         children: [
           {
             path: ':chatID',

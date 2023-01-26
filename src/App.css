@@ -194,7 +194,7 @@
     flex-direction: column;
     height: 100%;
     background-color: var(--color-1);
-    width: 15rem;
+    width: 300px;
 }
 
 .sidebar>.header {
@@ -276,6 +276,57 @@
 
 .chatPane {
     height: 100%;
+    width: 100%;
     background-color: var(--color-3);
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.chatPane>.inputWrap {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 0.5rem;
+}
+
+.chatPane>.inputWrap>input {
+    flex-grow: 1;
+    font-family: 'IBM Plex Sans', sans-serif;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    background-color: var(--color-2);
+    color: white;
+    transition: background-color 0.1s ease;
+}
+
+.chatPane>.inputWrap>input:focus {
+    outline: none;
+}
+
+.chatPane>.inputWrap>button {
+    
+    background-color: var(--color-1);
+    color: rgba(255, 255, 255, 70%);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.chatPane>.messages {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.chatPane>.messages>.message {
+
 }

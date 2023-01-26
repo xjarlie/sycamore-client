@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { get } from './lib/network';
+import withLoaderData from './lib/withLoaderData';
 
 class Main extends React.Component {
 
@@ -9,14 +10,13 @@ class Main extends React.Component {
     }
     loaded: boolean;
     shouldPoll: boolean;
+    props: any;
 
     constructor(props: any) {
         super(props);
 
         this.state = {
-            messages: {
-
-            }
+            messages: props.loaderData.json.inbox
         }
 
         this.loaded = false;
@@ -54,14 +54,17 @@ class Main extends React.Component {
                 });
             } catch (e) {
                 console.log(e);
-                const sleep = async () => {return new Promise(resolve => setTimeout(resolve, 2000))};
-                await sleep();
+                // const sleep = async () => {return new Promise(resolve => setTimeout(resolve, 2000))};
+                // await sleep();
             }
-
         }
     }
 
     render() {
+
+        const loaderData = this.props.loaderData;
+        console.log(loaderData);
+
 
         const chats = {
             'xjarlie~localhost:4000': {
@@ -107,12 +110,16 @@ class Main extends React.Component {
                         }
                     </div>
                 </div>
-                <div className='chatPane'>
-                    <Outlet context={{ inbox: this.state.messages }} key={Date.now()} />
-                </div>
+                <Outlet context={{ inbox: this.state.messages }} key={Date.now()} />
             </div>
         )
     }
 }
 
-export default Main;
+async function loader() {
+    const serverURL = localStorage.getItem('serverURL');
+    return await get(serverURL + '/inbox');
+}
+
+export { loader };
+export default withLoaderData(Main);
