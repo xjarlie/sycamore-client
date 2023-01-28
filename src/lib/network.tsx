@@ -37,7 +37,7 @@ export function serverUrlFrom(url: string, withProtocol: boolean): string {
 
     if (withProtocol) {
         if (!url.includes('http://') && !url.includes('https://')) {
-            serverURL = 'https://' + url;
+            serverURL = 'http://' + url;
         }
     } else {
         if (url.includes('http://')) {

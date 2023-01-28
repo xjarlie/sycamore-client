@@ -1,12 +1,15 @@
 import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useRouteError } from 'react-router-dom';
 import { get } from './lib/network';
 import withLoaderData from './lib/withLoaderData';
 
 class Main extends React.Component {
 
     state: {
-        messages: any
+        inbox: any,
+        outbox: any,
+        chats: any,
+        searchString: string
     }
     loaded: boolean;
     shouldPoll: boolean;
@@ -16,19 +19,23 @@ class Main extends React.Component {
         super(props);
 
         this.state = {
-            messages: props.loaderData.json.inbox
+            inbox: props.loaderData.json.inbox,
+            outbox: props.loaderData.json.outbox,
+            chats: {},
+            searchString: ''
         }
 
         this.loaded = false;
         this.shouldPoll = false;
 
-        this.startPoll = this.startPoll.bind(this);
+        this.startPollInbox = this.startPollInbox.bind(this);
     }
 
     componentDidMount(): void {
         this.shouldPoll = true;
         if (!this.loaded) {
-            this.startPoll();
+            this.startPollInbox();
+            this.startPollOutbox();
         }
         this.loaded = true;
     }
@@ -37,7 +44,7 @@ class Main extends React.Component {
         this.shouldPoll = false;
     }
 
-    async startPoll(): Promise<void> {
+    async startPollInbox(): Promise<void> {
 
         while (this.shouldPoll === true) {
 
@@ -47,10 +54,10 @@ class Main extends React.Component {
                 const response = await get(`${serverURL}/pollInbox`);
                 console.log(response.json.message.text);
 
-                const messages = this.state.messages;
-                messages[response.json.message.id] = response.json.message;
+                const inbox = this.state.inbox;
+                inbox[response.json.message.id] = response.json.message;
                 this.setState({
-                    messages: messages
+                    inbox: inbox
                 });
             } catch (e) {
                 console.log(e);
@@ -60,31 +67,57 @@ class Main extends React.Component {
         }
     }
 
+    async startPollOutbox(): Promise<void> {
+
+        while (this.shouldPoll === true) {
+
+            try {
+                const serverURL = localStorage.getItem('serverURL');
+                const response = await get(`${serverURL}/pollOutbox`);
+                console.log(response.json.message.text);
+
+                const outbox = this.state.outbox;
+                outbox[response.json.message.id] = response.json.message;
+                this.setState({
+                    outbox: outbox
+                })
+            } catch (e) {
+                console.log(e);
+            }
+
+        }
+
+    }
+
     render() {
 
         const loaderData = this.props.loaderData;
-        console.log(loaderData);
 
+        // const chats = { // TODO: dynamically add chats based on inbox+outbox
+        //     'xjarlie~localhost:4000': {
+        //         id: 'xjarlie',
+        //         url: 'localhost:4000',
+        //         displayName: 'Xjarlie',
+        //         unread: 2
+        //     },
+        //     'xjarlie1~localhost:4000': {
+        //         id: 'xjarlie1',
+        //         url: 'localhost:4000',
+        //         displayName: 'Xjarlie 1',
+        //         unread: 0
+        //     },
+        //     'xjarlie~localhost:3001': {
+        //         id: 'xjarlie',
+        //         url: 'localhost:3001',
+        //         displayName: 'XJARLIE',
+        //         unread: 0
+        //     }
+        // }
 
-        const chats = {
-            'xjarlie~localhost:4000': {
-                id: 'xjarlie',
-                url: 'localhost:4000',
-                displayName: 'Xjarlie',
-                unread: 2
-            },
-            'xjarlie1~localhost:4000': {
-                id: 'xjarlie1',
-                url: 'localhost:4000',
-                displayName: 'Xjarlie 1',
-                unread: 0
-            },
-            'xjarlie~localhost:3001': {
-                id: 'xjarlie',
-                url: 'localhost:3001',
-                displayName: 'XJARLIE',
-                unread: 0
-            }
+        const chats = this.state.chats;
+
+        for (const i in loaderData.json.inbox) {
+
         }
 
         return (
@@ -96,7 +129,7 @@ class Main extends React.Component {
                     </div>
                     <div className='chatList'>
                         {
-                            Object.entries(chats).map(([id, chat]) => {
+                            Object.entries(chats).map(([id, chat]: [id: string, chat: any]) => {
                                 return (
                                     <NavLink to={`${id}`} className={({isActive}) => {
                                         return isActive ? 'chatItem active' : 'chatItem'
@@ -110,16 +143,33 @@ class Main extends React.Component {
                         }
                     </div>
                 </div>
-                <Outlet context={{ inbox: this.state.messages }} key={Date.now()} />
+                <Outlet context={{ inbox: this.state.inbox, outbox: this.state.outbox }} key={Date.now()} />
             </div>
         )
     }
 }
 
-async function loader() {
+function loader() {
     const serverURL = localStorage.getItem('serverURL');
-    return await get(serverURL + '/inbox');
+    return get(serverURL + '/messages');
 }
 
-export { loader };
+function ErrorElement() {
+    const error: any = useRouteError();
+    const navigate = useNavigate();
+
+    const serverURL = localStorage.getItem('serverURL');
+
+    return (
+        <div className='mainError'>
+            <span className='title'>We've run into an issue.</span>
+            <span className='text'>Sycamore server ({serverURL}) may be unavailable.</span>
+            <button type='button'>Reload</button>
+            <button type='button' onClick={() => navigate('/logout')}>Log Out</button>
+        </div>
+    )
+
+}
+
+export { loader, ErrorElement };
 export default withLoaderData(Main);

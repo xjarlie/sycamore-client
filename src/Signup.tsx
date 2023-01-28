@@ -12,6 +12,12 @@ class Signup extends React.Component {
     constructor(props: any) {
         super(props);
 
+        const preServerURL = localStorage.getItem('serverURL');
+        const preId = localStorage.getItem('id');
+        const preToken = localStorage.getItem('token');
+
+        const authed: boolean = !!preServerURL && !!preId && !!preToken;
+
         this.state = {
             values: {
                 serverURL: '',
@@ -20,7 +26,7 @@ class Signup extends React.Component {
                 password2: '',
                 displayName: ''
             },
-            authed: false
+            authed: authed
         };
 
         this.onChange = this.onChange.bind(this);
