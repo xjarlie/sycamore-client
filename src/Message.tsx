@@ -19,13 +19,13 @@ class Message extends React.Component {
         const message = this.state.message;
 
         const date = moment(message.sentTimestamp);
-        
+        const isOwnMessage = message.from.id === localStorage.getItem('id');
 
         return (
-            <div className='message' key={message.id}>
-                <span className='from'>{message.from.id}</span>
+            <div className={'message ' + (isOwnMessage ? 'me' : '')} key={message.id}>
+                <span className='from'>@{message.from.id}</span>
                 <span className='text'>{message.text}</span>
-                <span className='status'>{message.status}</span>
+                {/* <span className='status'>{message.status}</span> */}
                 <span className='time'>{}</span>
             </div>
         )

@@ -236,7 +236,8 @@
 
 .sidebar>.searchWrap>input::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: rgba(255, 255, 255, 45%);;
+    color: rgba(255, 255, 255, 45%);
+    ;
     opacity: 1;
 }
 
@@ -275,12 +276,12 @@
 }
 
 .chatPane {
-    height: 100%;
     width: 100%;
+    height: 100%;
     background-color: var(--color-3);
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
+    justify-content: end;
 }
 
 .chatPane>.inputWrap {
@@ -307,7 +308,6 @@
 }
 
 .chatPane>.inputWrap>button {
-    
     background-color: var(--color-1);
     color: rgba(255, 255, 255, 70%);
     font-family: inherit;
@@ -321,12 +321,69 @@
 }
 
 .chatPane>.messages {
-    flex-grow: 1;
+    height: max-content;
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-bottom: 0.5rem;
 }
 
-.chatPane>.messages>.message {
+.chatPane>.messages::-webkit-scrollbar {
+    width: 10px;
+}
 
+.chatPane>.messages::-webkit-scrollbar-thumb {
+    background-color: var(--color-5);
+    width: 10px;
+    border-radius: 4px;
+}
+
+.chatPane>.messages::-webkit-scrollbar-track {
+    background-color: var(--color-3);
+    width: 10px;
+}
+
+
+/* .chatPane>.messages * {
+    overflow-anchor: none;
+}
+
+.chatPane>.messages>.anchor {
+    overflow-anchor: auto;
+    height: 1px;
+} */
+
+.chatPane>.messages>.message {
+    white-space: nowrap;
+    background-color: var(--color-6);
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+    border-radius: 8px;
+    display: flex;
+}
+
+.chatPane>.messages>.message.me {
+    background-color: var(--color-2);
+}
+
+.chatPane>.messages>.message>.from {
+    font-weight: 700;
+    margin-right: 0.5rem;
+}
+
+.chatPane>.messages>.message>.text {
+    flex-grow: 1;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+.chatPane>.messages>.message>.status {
+    justify-self: end;
+}
+
+.chatPane>.messages>.message>.time {
+    justify-self: end;
 }

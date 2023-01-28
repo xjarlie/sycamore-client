@@ -24,6 +24,10 @@ class Chat extends React.Component {
         // this.setState({
         //     props: this.props
         // });
+
+        const div = document.querySelector('.messages') as HTMLDivElement;
+
+        div.scrollTo(0, div.scrollHeight);
     }
 
     render() {
@@ -52,6 +56,7 @@ class Chat extends React.Component {
                             return <Message key={id} message={message}></Message>
                         })
                     }
+                    <div className='anchor'></div>
                 </div>
                 <div className='inputWrap'>
                     <input type='text' placeholder='Send a message...'></input>
