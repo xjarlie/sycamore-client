@@ -49,19 +49,19 @@
     font-weight: 300;
 }
 
-.authBox>.inputBox {
+.inputBox {
     display: flex;
     flex-direction: column;
 }
 
-.authBox>.inputBox>.row {
+.inputBox>.row {
     display: flex;
     flex-direction: row;
     width: 100%;
     flex-wrap: wrap;
 }
 
-.authBox>.inputBox>.row>.inputWrap {
+.inputBox>.row>.inputWrap {
     display: flex;
     flex-direction: column;
     width: 50%;
@@ -70,13 +70,13 @@
     position: relative;
 }
 
-.authBox>.inputBox>.row>.inputWrap>label {
+.inputBox>.row>.inputWrap>label {
     font-weight: 700;
     color: rgba(255, 255, 255, 60%);
     margin-bottom: 6px;
 }
 
-.authBox>.inputBox>.row>.inputWrap>input {
+.inputBox>.row>.inputWrap>input {
     font-family: 'IBM Plex Sans', sans-serif;
     border: none;
     border-radius: 8px;
@@ -88,26 +88,26 @@
     margin-bottom: 5px;
 }
 
-.authBox>.inputBox>.row>.inputWrap>input:hover {
+.inputBox>.row>.inputWrap>input:hover {
     /* background-color: var(--color-2); */
 }
 
-.authBox>.inputBox>.row>.inputWrap>input:focus {
+.inputBox>.row>.inputWrap>input:focus {
     background-color: var(--color-2);
     outline: none;
 }
 
-.authBox>.inputBox>.row>.inputWrap.valid>input {
+.inputBox>.row>.inputWrap.valid>input {
     outline: 2px solid var(--color-valid);
 
 }
 
-.authBox>.inputBox>.row>.inputWrap.invalid>input {
+.inputBox>.row>.inputWrap.invalid>input {
     outline: 2px solid var(--color-invalid);
 
 }
 
-.authBox>.inputBox>.row>.inputWrap>span {
+.inputBox>.row>.inputWrap>span {
     font-size: 0.9rem;
     font-weight: 700;
     padding-top: 4px;
@@ -115,30 +115,30 @@
     bottom: 0;
 }
 
-.authBox>.inputBox>.row>.inputWrap>span.validText {
+.inputBox>.row>.inputWrap>span.validText {
     color: var(--color-valid);
     display: none;
 }
 
-.authBox>.inputBox>.row>.inputWrap.valid>span.validText {
+.inputBox>.row>.inputWrap.valid>span.validText {
     display: inline;
 }
 
-.authBox>.inputBox>.row>.inputWrap>span.invalidText {
+.inputBox>.row>.inputWrap>span.invalidText {
     color: var(--color-invalid);
     display: none;
 }
 
-.authBox>.inputBox>.row>.inputWrap.invalid>span.invalidText {
+.inputBox>.row>.inputWrap.invalid>span.invalidText {
     display: inline;
 }
 
-.authBox>.inputBox>.row>.inputWrap>span.spaceTaker {
+.inputBox>.row>.inputWrap>span.spaceTaker {
     visibility: hidden;
 }
 
 
-.authBox>.footer {
+.footer {
     display: flex;
     flex-direction: row;
     padding: 1rem;
@@ -147,7 +147,7 @@
     align-items: flex-end;
 }
 
-.authBox>.footer>.link {
+.footer>.link {
     padding-bottom: 0.5rem;
     font-size: 1rem;
     text-decoration: none;
@@ -155,11 +155,11 @@
     transition: color 0.1s ease;
 }
 
-.authBox>.footer>.link:hover {
+.footer>.link:hover {
     color: rgba(255, 255, 255, 50%);
 }
 
-.authBox>.footer>.button {
+.footer>.button {
     background-color: var(--color-5);
     border: none;
     border-radius: 8px;
@@ -172,11 +172,11 @@
     font-weight: 500;
 }
 
-.authBox>.footer>.button:hover {
+.footer>.button:hover {
     background-color: var(--color-2);
 }
 
-.authBox>.footer>.button:disabled {
+.footer>.button:disabled {
     background-color: var(--color-6);
     cursor: default;
 }
@@ -282,6 +282,66 @@
     color: rgba(255, 255, 255, 65%);
     margin-left: 5px;
 }
+
+.sidebar>.chatList>.newChatButton {
+    background-color: var(--color-1);
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    color: white;
+    margin: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    border-radius: 4px;
+    padding: 0.75rem;
+    align-items: baseline;
+
+    font-size: 1.1rem;
+    font-weight: 600;
+
+    transition: background-color 0.1s ease;
+}
+
+.sidebar>.chatList>.newChatButton:hover {
+    background-color: var(--color-2);
+}
+
+.sidebar>.chatList>.newChatButton.active {
+    background-color: var(--color-2);
+}
+
+
+.sidebar>.account {
+    margin-top: auto;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar>.account>.username {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.sidebar>.account>.serverURL {
+    color: rgba(255, 255, 255, 70%);
+    margin-top: 0.2rem;
+    margin-bottom: 0.5rem
+}
+
+.sidebar>.account>.logout {
+    display: block;
+    text-decoration: none;
+    background-color: var(--color-invalid);
+    color: white;
+    padding: 0.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    border-radius: 4px;
+    width: fit-content;
+    font-weight: 500;
+}
+
 
 .mainError {
     display: flex;
@@ -415,4 +475,43 @@
     justify-self: flex-end;
     color: rgba(255, 255, 255, 70%);
     font-weight: 500;
+}
+
+/* NEW CHAT PANE */
+
+.newChat {
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.newChatBox {
+    width: 80%;
+    max-width: 1000px;
+    background-color: var(--color-1);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.newChatBox>.header {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 300;
+    display: block;
+    margin: 0.75rem;
+}
+
+.newChatBox>.footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.newChatBox>.footer>.button {
+    font-size: 1.2rem;
+    padding: 0.8rem;
 }

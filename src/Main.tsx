@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavLink, Outlet, useNavigate, useRouteError } from 'react-router-dom';
-import { get } from './lib/network';
+import { Link, NavLink, Outlet, useNavigate, useRouteError } from 'react-router-dom';
+import { get, serverUrlFrom } from './lib/network';
 import withLoaderData from './lib/withLoaderData';
 
 class Main extends React.Component {
@@ -14,6 +14,7 @@ class Main extends React.Component {
     loaded: boolean;
     shouldPoll: boolean;
     props: any;
+    errors: number;
 
     constructor(props: any) {
         super(props);
@@ -25,10 +26,13 @@ class Main extends React.Component {
             searchString: ''
         }
 
+        this.errors = 0;
+
         this.loaded = false;
         this.shouldPoll = false;
 
         this.startPollInbox = this.startPollInbox.bind(this);
+        this.addChat = this.addChat.bind(this);
     }
 
     componentDidMount(): void {
@@ -61,8 +65,14 @@ class Main extends React.Component {
                 });
             } catch (e) {
                 console.log(e);
-                // const sleep = async () => {return new Promise(resolve => setTimeout(resolve, 2000))};
-                // await sleep();
+                this.errors++;
+                //const sleep = async () => { return new Promise(resolve => setTimeout(resolve, 100)) };
+                //await sleep();
+
+                if (this.errors > 10) {
+                    alert('Error: ' + e);
+                    this.shouldPoll = false;
+                }
             }
         }
     }
@@ -83,10 +93,29 @@ class Main extends React.Component {
                 })
             } catch (e) {
                 console.log(e);
+                this.errors++;
+                //const sleep = async () => { return new Promise(resolve => setTimeout(resolve, 100)) };
+                //await sleep();
+
+                if (this.errors > 10) {
+                    alert('Error: ' + e);
+                    this.shouldPoll = false;
+                }
             }
 
         }
 
+    }
+
+    addChat(url: string) {
+        const chats = this.state.chats;
+        chats[url] = {
+            id: url.split('~')[0],
+            url: url.split('~')[1]
+        }
+        this.setState({
+            chats: chats
+        });
     }
 
     render() {
@@ -114,11 +143,36 @@ class Main extends React.Component {
         //     }
         // }
 
-        const chats = this.state.chats;
+        const chats: any = this.state.chats;
 
-        for (const i in loaderData.json.inbox) {
+        const { inbox, outbox } = loaderData.json;
 
+        for (const i in inbox) {
+            const from: {
+                id: string,
+                url: string
+            } = inbox[i].from;
+            if (chats[`${from.id}~${serverUrlFrom(from.url, false)}`] === undefined) {
+                chats[`${from.id}~${serverUrlFrom(from.url, false)}`] = {
+                    id: from.id,
+                    url: serverUrlFrom(from.url, false)
+                }
+            }
         }
+        for (const i in outbox) {
+            const to: {
+                id: string,
+                url: string
+            } = outbox[i].to;
+            if (chats[`${to.id}~${serverUrlFrom(to.url, false)}`] === undefined) {
+                chats[`${to.id}~${serverUrlFrom(to.url, false)}`] = {
+                    id: to.id,
+                    url: serverUrlFrom(to.url, false)
+                }
+            }
+        }
+
+        console.log(chats);
 
         return (
             <div className='main'>
@@ -131,19 +185,27 @@ class Main extends React.Component {
                         {
                             Object.entries(chats).map(([id, chat]: [id: string, chat: any]) => {
                                 return (
-                                    <NavLink to={`${id}`} className={({isActive}) => {
+                                    <NavLink to={`${id}`} className={({ isActive }) => {
                                         return isActive ? 'chatItem active' : 'chatItem'
                                     }} key={id}>
-                                        <span className='id'>@{chat.displayName}</span>
+                                        <span className='id'>@{chat.id}</span>
                                         <span className='url'> ~ {chat.url}</span>
                                         <span className='badge'></span>
                                     </NavLink>
                                 )
                             })
                         }
+                        <NavLink to={'new'} className={({ isActive }) => {
+                            return isActive ? 'newChatButton active' : 'newChatButton'
+                        }} >+ New Chat</NavLink>
+                    </div>
+                    <div className='account'>
+                        <div className="username">@{localStorage.getItem('id')}</div>
+                        <div className="serverURL">{serverUrlFrom(localStorage.getItem('serverURL') as string, false)}</div>
+                        <Link to={'/logout'} className="logout">Log Out</Link>
                     </div>
                 </div>
-                <Outlet context={{ inbox: this.state.inbox, outbox: this.state.outbox }} key={Date.now()} />
+                <Outlet context={{ inbox: this.state.inbox, outbox: this.state.outbox, addChat: this.addChat }} key={Date.now()} />
             </div>
         )
     }

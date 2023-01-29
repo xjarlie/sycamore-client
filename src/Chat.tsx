@@ -69,12 +69,12 @@ class Chat extends React.Component {
         }
 
         const tempOutbox = this.state.tempOutbox;
-        tempOutbox.push({ 
-            ...message, 
-            sentTimestamp: Date.now(), 
-            from: { 
-                id: thisUser.id, 
-                url: serverUrlFrom(thisUser.url as string, true) 
+        tempOutbox.push({
+            ...message,
+            sentTimestamp: Date.now(),
+            from: {
+                id: thisUser.id,
+                url: serverUrlFrom(thisUser.url as string, true)
             },
             id: 'TEMPORARY-MESSAGE' + Date.now()
         });
@@ -87,20 +87,31 @@ class Chat extends React.Component {
 
             const msgInput = document.querySelector('#messageInput') as HTMLInputElement;
             msgInput.value = '';
-            msgInput.focus();    
+            msgInput.focus();
 
 
             try {
 
                 const { status, json } = await post(`${serverURL}/outbox`, message);
                 console.log(status, json);
+
+                if (status === 429) {
+                    console.log('rate limited');
+                }
+
                 this.setState({
                     message: ''
                 });
 
-            } catch (e) {
-                alert('Error: ' + e);
-                console.log(e);
+            } catch (e: any) {
+
+                if (e.toString().includes('Too many')) {
+                    alert('You are sending messages too quickly for the server to handle. Please chill')
+                    console.log(e);
+                } else {
+                    alert('Error: ' + e);
+                    console.log(e);
+                }
             }
         });
     }

@@ -260,9 +260,4 @@ class Signup extends React.Component {
     }
 }
 
-function loader() {
-    return null;
-}
-
-export { loader };
 export default withLoaderData(Signup);
