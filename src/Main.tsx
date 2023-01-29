@@ -217,7 +217,6 @@ function loader() {
 }
 
 function ErrorElement() {
-    const error: any = useRouteError();
     const navigate = useNavigate();
 
     const serverURL = localStorage.getItem('serverURL');
