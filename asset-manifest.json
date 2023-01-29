@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/sycamore-client/static/css/main.d92cf743.css",
-    "main.js": "/sycamore-client/static/js/main.db936faf.js",
+    "main.js": "/sycamore-client/static/js/main.8cedd6c6.js",
     "index.html": "/sycamore-client/index.html",
     "main.d92cf743.css.map": "/sycamore-client/static/css/main.d92cf743.css.map",
-    "main.db936faf.js.map": "/sycamore-client/static/js/main.db936faf.js.map"
+    "main.8cedd6c6.js.map": "/sycamore-client/static/js/main.8cedd6c6.js.map"
   },
   "entrypoints": [
     "static/css/main.d92cf743.css",
-    "static/js/main.db936faf.js"
+    "static/js/main.8cedd6c6.js"
   ]
 }
