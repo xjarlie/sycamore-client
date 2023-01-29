@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, NavLink, Outlet, useNavigate, useRouteError } from 'react-router-dom';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { get, serverUrlFrom } from './lib/network';
 import withLoaderData from './lib/withLoaderData';
 
