@@ -60,6 +60,7 @@ class Main extends React.Component {
 
                 const inbox = this.state.inbox;
                 inbox[response.json.message.id] = response.json.message;
+                this.errors = 0;
                 this.setState({
                     inbox: inbox
                 });
