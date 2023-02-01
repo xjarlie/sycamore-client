@@ -54,7 +54,9 @@ const router = createBrowserRouter([
             }
         ]
     }
-]);
+], {
+    basename: process.env.PUBLIC_URL
+});
 
 root.render(
     <React.StrictMode>

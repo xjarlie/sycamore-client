@@ -13,8 +13,10 @@ class Chat extends React.Component {
     constructor(props: any) {
         super(props);
 
+        const localMessage = localStorage.getItem('currentMessage');
+
         this.state = {
-            message: '',
+            message: localMessage || '',
             tempOutbox: []
         }
 
@@ -89,6 +91,7 @@ class Chat extends React.Component {
             msgInput.value = '';
             msgInput.focus();
 
+            localStorage.setItem('currentMessage', '');
 
             try {
 
@@ -98,6 +101,8 @@ class Chat extends React.Component {
                 if (status === 429) {
                     console.log('rate limited');
                 }
+
+                //localStorage.setItem('currentMessage', '');
 
                 this.setState({
                     message: ''
@@ -117,6 +122,8 @@ class Chat extends React.Component {
     }
 
     onChange(e: any) {
+
+        localStorage.setItem('currentMessage', e.target.value);
 
         this.setState({
             message: e.target.value

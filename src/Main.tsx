@@ -20,8 +20,8 @@ class Main extends React.Component {
         super(props);
 
         this.state = {
-            inbox: props.loaderData.json.inbox,
-            outbox: props.loaderData.json.outbox,
+            inbox: props.loaderData.json.inbox || {},
+            outbox: props.loaderData.json.outbox || {},
             chats: {},
             searchString: ''
         }
