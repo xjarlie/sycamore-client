@@ -38,14 +38,38 @@ class Main extends React.Component {
     componentDidMount(): void {
         this.shouldPoll = true;
         if (!this.loaded) {
-            this.startPollInbox();
-            this.startPollOutbox();
+            // this.startPollInbox();
+            // this.startPollOutbox();
+            this.shortPoll();
         }
         this.loaded = true;
     }
 
     componentWillUnmount(): void {
         this.shouldPoll = false;
+    }
+
+    async shortPoll(): Promise<void> {
+        try {
+            const serverURL = localStorage.getItem('serverURL');
+
+            // Get inbox
+            const inboxResponse = await get(`${serverURL}/shortPollInbox`);
+            const prevInbox = this.state.inbox;
+            Object.assign(prevInbox, inboxResponse);
+
+            await this.sleep(100);
+            this.shortPoll();
+
+        } catch (e) {
+            console.log(e);
+            await this.sleep(1000);
+            this.shortPoll();
+        }
+    }
+    
+    sleep(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     async startPollInbox(): Promise<void> {
