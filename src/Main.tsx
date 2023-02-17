@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { get, serverUrlFrom } from './lib/network';
+import { get, post, serverUrlFrom } from './lib/network';
 import withLoaderData from './lib/withLoaderData';
 
 class Main extends React.Component {
@@ -20,8 +20,8 @@ class Main extends React.Component {
         super(props);
 
         this.state = {
-            inbox: props.loaderData.json.inbox || {},
-            outbox: props.loaderData.json.outbox || {},
+            inbox: props?.loaderData?.json?.inbox || {},
+            outbox: props?.loaderData?.json?.outbox || {},
             chats: {},
             searchString: ''
         }
@@ -53,13 +53,39 @@ class Main extends React.Component {
         try {
             const serverURL = localStorage.getItem('serverURL');
 
+            // Get last inbox message
+            const prevInbox: any = this.state.inbox;
+            const arrPrevInbox: any[] = Object.values(prevInbox);
+            arrPrevInbox.sort((a, b) => b.sentTimestamp - a.sentTimestamp)
+            const lastMessageTimestamp: number = arrPrevInbox[0]?.sentTimestamp || 0;
+
             // Get inbox
-            const inboxResponse = await get(`${serverURL}/shortPollInbox`);
-            const prevInbox = this.state.inbox;
-            Object.assign(prevInbox, inboxResponse);
+            const inboxResponse = await post(`${serverURL}/shortPollInbox`, { timestamp: lastMessageTimestamp });
+            Object.assign(prevInbox, inboxResponse.json.inbox);
+
+
+            // Get last outbox message
+            const prevOutbox: any = this.state.outbox;
+            const arrPrevOutbox: any[] = Object.values(prevOutbox);
+            arrPrevOutbox.sort((a,b) => b.sentTimestamp - a.sentTimestamp);
+            const lastOutboxTimestamp: number = arrPrevOutbox[0]?.sentTimestamp || 0;
+            
+
+            // Get outbox
+            const outboxResponse = await post(`${serverURL}/shortPollOutbox`, { timestamp: lastOutboxTimestamp });
+            Object.assign(prevOutbox, outboxResponse.json.outbox);
+ 
+            if (Object.keys(inboxResponse.json.inbox).length !== 0 || Object.keys(outboxResponse.json.outbox).length !== 0) {
+                console.log('new: ', inboxResponse.json.inbox, outboxResponse.json.outbox);
+                this.setState({
+                    inbox: prevInbox,
+                    outbox: prevOutbox
+                })
+            } 
 
             await this.sleep(100);
             this.shortPoll();
+
 
         } catch (e) {
             console.log(e);
@@ -67,7 +93,7 @@ class Main extends React.Component {
             this.shortPoll();
         }
     }
-    
+
     sleep(ms: number) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -144,9 +170,6 @@ class Main extends React.Component {
     }
 
     render() {
-
-        const loaderData = this.props.loaderData;
-
         // const chats = { // TODO: dynamically add chats based on inbox+outbox
         //     'xjarlie~localhost:4000': {
         //         id: 'xjarlie',
@@ -170,7 +193,8 @@ class Main extends React.Component {
 
         const chats: any = this.state.chats;
 
-        const { inbox, outbox } = loaderData.json;
+        //const { inbox, outbox } = loaderData.json;
+        const { inbox, outbox } = this.state;
 
         for (const i in inbox) {
             const from: {
@@ -237,8 +261,9 @@ class Main extends React.Component {
 }
 
 function loader() {
-    const serverURL = localStorage.getItem('serverURL');
-    return get(serverURL + '/messages');
+    // const serverURL = localStorage.getItem('serverURL');
+    // return get(serverURL + '/messages');
+    return {}
 }
 
 function ErrorElement() {
